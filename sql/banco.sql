@@ -1,6 +1,6 @@
-drop database if exists Blog_Laluce
+drop database if exists Blog_Laluce;
 
-create database Blog_Laluce if not exists;
+create database if not exists Blog_Laluce ;
 use Blog_Laluce;
 
 create table usuario
