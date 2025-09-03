@@ -9,6 +9,7 @@ insert_teste('Victor', 'f.laluce@aluno.ifsp.edu.br', 'abc123');
 buscar_teste();
 
 
+
 // Teste inserção banco de dados
 function insert_teste($nome, $email, $senha): void
 {
