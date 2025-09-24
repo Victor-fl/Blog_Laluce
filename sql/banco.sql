@@ -24,3 +24,6 @@ data_criacao datetime not null default current_timestamp,
 data_postagem datetime not null,
 foreign key (usuario_id) references usuario (id)
 );
+
+SELECT * FROM usuario;
+UPDATE `blog_laluce`.`usuario` SET `ativo`='1', `adm`='1' WHERE `id`='1';
