@@ -22,53 +22,55 @@
                     include 'includes/menu.php';
                 ?>
             </div>
-</div>
-            <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
-                <!-- Conteúdo //-->
-                <h2>Página Inicial</h2>
-                <?php
-                    include 'includes/busca.php';
-                ?>
+        </div>
+        <div class="col-md-10" style="padding-top: 50px;">
+            <!-- Conteúdo //-->
+            <h2>Página Inicial</h2>
+            <?php
+                include 'includes/busca.php';
+                date_default_timezone_set('America/Sao_Paulo'); 
+                echo date('d/m/Y H:i:s');
+            ?>
 
-                <?php
-                    require_once 'includes/funcoes.php';
-                    require_once 'core/conexao_mysql.php';
-                    require_once 'core/sql.php';
-                    require_once 'core/mysql.php';
-                
-    foreach($_GET as $indice => $dado) {
-        $$indice = limparDados($dado);
-    }
+            <?php
+                require_once 'includes/funcoes.php';
+                require_once 'core/conexao_mysql.php';
+                require_once 'core/sql.php';
+                require_once 'core/mysql.php';
+            
+                foreach($_GET as $indice => $dado) {
+                    $$indice = limparDados($dado);
+                }
 
-    $data_atual = date('Y-m-d H:i:s');
+                $data_atual = date('Y-m-d H:i:s');
 
-    $criterio = [
-        ['data_postagem', '<=', $data_atual]
-    ];
+                $criterio = [
+                    ['data_postagem', '<=', $data_atual]
+                ];
 
-    if(!empty($busca)) {
-        $criterio[] = [
-            'AND',
-            'texto',
-            'like',
-            "%{$busca}%"
-        ];
-    }
+                if(!empty($busca)) {
+                    $criterio[] = [
+                        'AND',
+                        'texto',
+                        'like',
+                        "%{$busca}%"
+                    ];
+                }
 
-    $posts = buscar(
-        'post',
-        [
-            'titulo',
-            'data_postagem',
-            'id',
-            '(select nome 
-                from usuario 
-                where usuario.id = post.usuario_id) as nome'
-        ],
-        $criterio,
-        'data_postagem DESC'
-    );
-?>
+                $posts = buscar(
+                    'post',
+                    [
+                        'titulo',
+                        'data_postagem',
+                        'id',
+                        '(select nome 
+                            from usuario 
+                            where usuario.id = post.usuario_id) as nome'
+                    ],
+                    $criterio, 
+                    'data_postagem DESC'
+                );
+            ?>
                 </div>
                 <div class="list-group">
                     <?php
