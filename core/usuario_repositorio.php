@@ -14,7 +14,7 @@ foreach ($_GET as $indice => $dado) {
     $$indice = limparDados($dado);
 }
 
-switch ($acao) {
+switch ($acao) { // pega o valor da $acao define ela como insert
     case 'insert':
         $dados = [
             'nome' => $nome,
@@ -22,7 +22,7 @@ switch ($acao) {
             'senha' => crypt($senha, $salt)
         ];
 
-        insere(
+        insere( // insere no banco
             'usuario',
             $dados
         );

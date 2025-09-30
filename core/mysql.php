@@ -1,13 +1,13 @@
 <?php
 
-function insere(string $entidade, array $dados): bool
+function insere(string $entidade, array $dados): bool //$entidade = tabela e $dados = campos??; retorna T ou F
 {
-    $retorno = false;
+    $retorno = false; // retorna falso ate confirmar sucesso
 
-    foreach ($dados as $campo => $dado) {
-        $coringa[$campo] = '?';
-        $tipo[] = gettype($dado)[0];
-        $$campo = $dado;
+    foreach ($dados as $campo => $dado) { //"passa por" cada campo que foi inserido
+        $coringa[$campo] = '?'; // para cada campo cria um placeholder "?" = espaço reservado no SQL que sera preenchido pelo bind_param. Deixa mais seguro? sla
+        $tipo[] = gettype($dado)[0]; // pega a primeira letra do tipo do dado, usados depois em: mysqli_stmt_bind_param
+        $$campo = $dado; // se $campo = 'titulo', logo, $titulo = $dado
     }
 
     $instrucao = insert($entidade, $coringa);
@@ -26,30 +26,30 @@ function insere(string $entidade, array $dados): bool
 
     mysqli_stmt_close($stmt);
 
-    desconecta($conexao);
+    desconecta($conexao); 
 
     return $retorno;
 }
 
-function atualiza(string $entidade, array $dados, array $criterio = []): bool
+function atualiza(string $entidade, array $dados, array $criterio = []): bool //$criterio seria tipo o WHERE id = x, onde cada where sera uma array dentro de outra array
 {
     $retorno = false;
 
-    foreach ($dados as $campo => $dado) {
-        $coringa_dados[$campo] = '?';
+    foreach ($dados as $campo => $dado) { // $campo = 'nome' e $dado = 'Victor'
+        $coringa_dados[$campo] = '?'; // prepara o placeholders para os campos atualizados
         $tipo[] = gettype($dado)[0];
         $$campo = $dado;
     }
 
-    foreach ($criterio as $expressao) {
-        $dado = $expressao[count($expressao) - 1];
+    foreach ($criterio as $expressao) { 
+        $dado = $expressao[count($expressao) - 1]; // pega o ultimo item da expressão (numero do id)
         $tipo[] = gettype($dado)[0];
-        $expressao[count($expressao) - 1] = '?';
+        $expressao[count($expressao) - 1] = '?';// coloca um placeholder no lugar do numero do id, para que serve isso?
         $coringa_criterio[] = $expressao;
 
         $nome_campo = (count($expressao) < 4) ? $expressao[0] : $expressao[1];
 
-        if (isset($nome_campo)) {
+        if (isset($nome_campo)) { // verifica se o campo existe?
             $nome_campo = $nome_campo . '_' . rand();
         }
 
@@ -58,7 +58,7 @@ function atualiza(string $entidade, array $dados, array $criterio = []): bool
         $$nome_campo = $dado;
     }
 
-    $instrucao = update($entidade, $coringa_dados, $coringa_criterio);
+    $instrucao = update($entidade, $coringa_dados, $coringa_criterio); // uptade $entidade set $coringa_dados where $coringa_criterios
 
     $conexao = conecta();
 
@@ -108,7 +108,7 @@ function deleta(string $entidade, array $criterio = []): bool
         $$nome_campo = $dado;
     }
 
-    $instrucao = delete($entidade, $coringa_criterio);
+    $instrucao = delete($entidade, $coringa_criterio); // delete from  $entidade where $coringa_criterio
 
     $conexao = conecta();
 
@@ -159,7 +159,7 @@ function buscar(string $entidade, array $campos = ['*'], array $criterio = [], s
         $$nome_campo = $dado;
     }
 
-    $instrucao = select($entidade, $campos, $coringa_criterio, $ordem);
+    $instrucao = select($entidade, $campos, $coringa_criterio, $ordem); // select $campos from $entidade where $coringa_criterio order by $ordem
 
     $conexao = conecta();
 
