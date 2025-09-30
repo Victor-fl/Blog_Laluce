@@ -36,7 +36,7 @@ function atualiza(string $entidade, array $dados, array $criterio = []): bool //
     $retorno = false;
 
     foreach ($dados as $campo => $dado) { // $campo = 'nome' e $dado = 'Victor'
-        $coringa_dados[$campo] = '?'; // prepara o placeholders para os campos atualizados
+        $coringa_dados[$campo] = '?'; // prepara o placeholders para os campos atualizadoss
         $tipo[] = gettype($dado)[0];
         $$campo = $dado;
     }
